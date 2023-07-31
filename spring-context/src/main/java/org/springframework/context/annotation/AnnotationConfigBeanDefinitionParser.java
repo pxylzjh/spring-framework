@@ -38,13 +38,13 @@ import org.springframework.lang.Nullable;
  * @see AnnotationConfigUtils
  */
 public class AnnotationConfigBeanDefinitionParser implements BeanDefinitionParser {
-
+	// TODO 处理 <context:annotation-config>标签的转换器,这里会注册6个beanDefinition
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
 		Object source = parserContext.extractSource(element);
-
-		// Obtain bean definitions for all relevant BeanPostProcessors.
+		// TODO 获得所有相关的 beanPostProcessor这里面就包括了ConfigurationClassPostProcessor,
+		//  AutowiredAnnotationBeanPostProcessor,CommonAnnotationBeanPostProcessor等 一共6 个
 		Set<BeanDefinitionHolder> processorDefinitions =
 				AnnotationConfigUtils.registerAnnotationConfigProcessors(parserContext.getRegistry(), source);
 

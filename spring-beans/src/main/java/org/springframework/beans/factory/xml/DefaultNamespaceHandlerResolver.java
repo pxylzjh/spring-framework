@@ -115,8 +115,8 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	@Override
 	@Nullable
 	public NamespaceHandler resolve(String namespaceUri) {
-		Map<String, Object> handlerMappings = getHandlerMappings();
-		Object handlerOrClassName = handlerMappings.get(namespaceUri);
+		Map<String, Object> handlerMappings = getHandlerMappings();// TODO 获取所有的 namespace对应的处理类,比如xmlns:context="http://www.springframework.org/schema/context"对应的是 org.springframework.context.config.ContextNamespaceHandler
+		Object handlerOrClassName = handlerMappings.get(namespaceUri);// 从所有的namespace处理类中找到当前 uri对应的
 		if (handlerOrClassName == null) {
 			return null;
 		}
@@ -125,15 +125,15 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 		}
 		else {
 			String className = (String) handlerOrClassName;
-			try {
+			try {// TODO 通过反射创建namespace处理类
 				Class<?> handlerClass = ClassUtils.forName(className, this.classLoader);
 				if (!NamespaceHandler.class.isAssignableFrom(handlerClass)) {
 					throw new FatalBeanException("Class [" + className + "] for namespace [" + namespaceUri +
 							"] does not implement the [" + NamespaceHandler.class.getName() + "] interface");
 				}
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
-				namespaceHandler.init();
-				handlerMappings.put(namespaceUri, namespaceHandler);
+				namespaceHandler.init();// TODO init方法是为了创建 namespace 中所有标签的转换器,并保存到父类NamespaceHandlerSupport中的一个map中
+				handlerMappings.put(namespaceUri, namespaceHandler);// TODO 将创建好的namespace处理器替换掉原本的全类名,下次就不用再反射创建了
 				return namespaceHandler;
 			}
 			catch (ClassNotFoundException ex) {
@@ -151,7 +151,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	 * Load the specified NamespaceHandler mappings lazily.
 	 */
 	private Map<String, Object> getHandlerMappings() {
-		Map<String, Object> handlerMappings = this.handlerMappings;
+		Map<String, Object> handlerMappings = this.handlerMappings;// TODO handlerMappings 是从 META-INF下的spring.handlers配置文件中加载的
 		if (handlerMappings == null) {
 			synchronized (this) {
 				handlerMappings = this.handlerMappings;

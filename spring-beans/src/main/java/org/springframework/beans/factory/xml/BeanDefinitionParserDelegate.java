@@ -1382,12 +1382,12 @@ public class BeanDefinitionParserDelegate {
 		String namespaceUri = getNamespaceURI(ele);
 		if (namespaceUri == null) {
 			return null;
-		}
+		}// TODO 创建namespace对应的所有的标签的转换器,比如 context中的annotation-config标签
 		NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 		if (handler == null) {
 			error("Unable to locate Spring NamespaceHandler for XML schema namespace [" + namespaceUri + "]", ele);
 			return null;
-		}
+		}// TODO 从创建的转换器中找到对应的对当前Element标签对象进行转换
 		return handler.parse(ele, new ParserContext(this.readerContext, this, containingBd));
 	}
 

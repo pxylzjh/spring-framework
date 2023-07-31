@@ -63,8 +63,18 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
-		this.reader = new AnnotatedBeanDefinitionReader(this);
-		this.scanner = new ClassPathBeanDefinitionScanner(this);
+		this.reader = new AnnotatedBeanDefinitionReader(this);// todo 创建一个reader负责加载注解方式定义的bean
+		/**
+		 * 创建BeanDefinition扫描器
+		 * 可以用来扫描包或者类，继而转换为bd
+		 *
+		 * spring默认的扫描包不是这个scanner对象
+		 * 而是自己new的一个ClassPathBeanDefinitionScanner
+		 * spring在执行工程后置处理器ConfigurationClassPostProcessor时，去扫描包时会new一个ClassPathBeanDefinitionScanner
+		 *
+		 * 这里的scanner仅仅是为了程序员可以手动调用AnnotationConfigApplicationContext对象的scan方法
+		 */
+		this.scanner = new ClassPathBeanDefinitionScanner(this);// todo 创建一个scanner负责加载通过配置文件定义的bean
 	}
 
 	/**
@@ -85,7 +95,7 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 */
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 		this();
-		register(componentClasses);
+		register(componentClasses);// todo 将传入的配置类优先注册到容器中
 		refresh();
 	}
 

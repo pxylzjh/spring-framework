@@ -99,7 +99,7 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 
 	@Override
 	protected boolean isInfrastructureClass(Class<?> beanClass) {
-		// Previously we setProxyTargetClass(true) in the constructor, but that has too
+		// Previously we setProxyTargetClass(true) in the constructor, but that has too TODO 之前在构造函数中我们 setProxyTargetClass(true),但是这么做影响太大了
 		// broad an impact. Instead we now override isInfrastructureClass to avoid proxying
 		// aspects. I'm not entirely happy with that as there is no good reason not
 		// to advise aspects, except that it causes advice invocation to go through a
@@ -107,8 +107,8 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 		// proxied by that interface and fail at runtime as the advice method is not
 		// defined on the interface. We could potentially relax the restriction about
 		// not advising aspects in the future.
-		return (super.isInfrastructureClass(beanClass) ||
-				(this.aspectJAdvisorFactory != null && this.aspectJAdvisorFactory.isAspect(beanClass)));
+		return (super.isInfrastructureClass(beanClass) ||// TODO 判断是否是 Advice Pointcut advisor AopInfrastructureBean如果是返回true
+				(this.aspectJAdvisorFactory != null && this.aspectJAdvisorFactory.isAspect(beanClass)));// 判断是否是切面,即是否使用了@Aspect
 	}
 
 	/**

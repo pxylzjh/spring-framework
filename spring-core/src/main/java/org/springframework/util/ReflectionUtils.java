@@ -318,7 +318,7 @@ public abstract class ReflectionUtils {
 	 * @see #doWithMethods
 	 */
 	public static void doWithLocalMethods(Class<?> clazz, MethodCallback mc) {
-		Method[] methods = getDeclaredMethods(clazz, false);
+		Method[] methods = getDeclaredMethods(clazz, false);// TODO 获取当前class中所有声明的方法
 		for (Method method : methods) {
 			try {
 				mc.doWith(method);

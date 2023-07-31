@@ -70,7 +70,7 @@ public abstract class NamespaceHandlerSupport implements NamespaceHandler {
 	@Override
 	@Nullable
 	public BeanDefinition parse(Element element, ParserContext parserContext) {
-		BeanDefinitionParser parser = findParserForElement(element, parserContext);
+		BeanDefinitionParser parser = findParserForElement(element, parserContext);// TODO 从parsers  map中通过element解析出的name获取对应的parser
 		return (parser != null ? parser.parse(element, parserContext) : null);
 	}
 

@@ -85,7 +85,7 @@ public class AspectMetadata implements Serializable {
 		AjType<?> ajType = null;
 		while (currClass != Object.class) {
 			AjType<?> ajTypeToCheck = AjTypeSystem.getAjType(currClass);
-			if (ajTypeToCheck.isAspect()) {
+			if (ajTypeToCheck.isAspect()) {// TODO 判断是否使用了 @Aspect注解
 				ajType = ajTypeToCheck;
 				break;
 			}

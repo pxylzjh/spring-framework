@@ -90,7 +90,7 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
-		AnnotationMetadata metadata;
+		AnnotationMetadata metadata;// TODO 判断是否是注解注册的BD,比如通过 @Component 或者 @Configuration等注册
 		if (beanDef instanceof AnnotatedBeanDefinition &&
 				className.equals(((AnnotatedBeanDefinition) beanDef).getMetadata().getClassName())) {
 			// Can reuse the pre-parsed metadata from the given BeanDefinition...
@@ -98,7 +98,7 @@ abstract class ConfigurationClassUtils {
 		}
 		else if (beanDef instanceof AbstractBeanDefinition && ((AbstractBeanDefinition) beanDef).hasBeanClass()) {
 			// Check already loaded Class if present...
-			// since we possibly can't even load the class file for this Class.
+			// since we possibly can't even load the class file for this Class. TODO 检查当前class是否是下面这几个类的子类,如果是说明不是配置类
 			Class<?> beanClass = ((AbstractBeanDefinition) beanDef).getBeanClass();
 			if (BeanFactoryPostProcessor.class.isAssignableFrom(beanClass) ||
 					BeanPostProcessor.class.isAssignableFrom(beanClass) ||
@@ -121,13 +121,13 @@ abstract class ConfigurationClassUtils {
 				return false;
 			}
 		}
-
+		// TODO 获取当前类上Configuration注解的配置信息
 		Map<String, Object> config = metadata.getAnnotationAttributes(Configuration.class.getName());
-		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {
-			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);
-		}
+		if (config != null && !Boolean.FALSE.equals(config.get("proxyBeanMethods"))) {// TODO 含有@Configuration注解，那么对应的BeanDefinition的configurationClass属性值设置为full
+			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_FULL);// TODO 说明是个配置类,设置configurationClass属性
+		}// TODO 如果使用了 @Bean @Import @ImportResource @Component @ComponentScan 将configurationClass属性值设置为lite
 		else if (config != null || isConfigurationCandidate(metadata)) {
-			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);
+			beanDef.setAttribute(CONFIGURATION_CLASS_ATTRIBUTE, CONFIGURATION_CLASS_LITE);// TODO 说明是个配置类,设置configurationClass属性
 		}
 		else {
 			return false;
@@ -136,7 +136,7 @@ abstract class ConfigurationClassUtils {
 		// It's a full or lite configuration candidate... Let's determine the order value, if any.
 		Integer order = getOrder(metadata);
 		if (order != null) {
-			beanDef.setAttribute(ORDER_ATTRIBUTE, order);
+			beanDef.setAttribute(ORDER_ATTRIBUTE, order);// TODO 设置 order 属性
 		}
 
 		return true;
@@ -155,14 +155,14 @@ abstract class ConfigurationClassUtils {
 			return false;
 		}
 
-		// Any of the typical annotations found?
+		// Any of the typical annotations found? TODO 是否使用了 @Component @ComponentScan @Import @ImportResource 注解
 		for (String indicator : candidateIndicators) {
 			if (metadata.isAnnotated(indicator)) {
 				return true;
 			}
 		}
 
-		// Finally, let's look for @Bean methods...
+		// Finally, let's look for @Bean methods...// TODO 是否有使用了 @Bean的方法
 		return hasBeanMethods(metadata);
 	}
 

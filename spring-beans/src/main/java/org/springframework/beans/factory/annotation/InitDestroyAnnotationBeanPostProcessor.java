@@ -146,7 +146,7 @@ public class InitDestroyAnnotationBeanPostProcessor
 
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
-		LifecycleMetadata metadata = findLifecycleMetadata(beanType);
+		LifecycleMetadata metadata = findLifecycleMetadata(beanType);// TODO 从 lifecycleMetadataCache中获取,没有则方法
 		metadata.checkConfigMembers(beanDefinition);
 	}
 
